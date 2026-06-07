@@ -26,9 +26,7 @@
   --radius:      14px;
   --radius-sm:   9px;
 
-  --font-display: 'Syne', sans-serif;
-  --font-body:    'Onest', sans-serif;
-  --font-mono:    'Inconsolata', monospace;
+  
 
   /* Layout tokens */
   --section-px:  2rem;
