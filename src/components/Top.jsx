@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { GitBranch, Bookmark, BarChart2, Code2, Monitor, Briefcase, Mail } from 'lucide-react'
+import { GitBranch, Bookmark, BarChart2 } from 'lucide-react'
+import logo from '../assets/images/fikadu.jpeg'
 
-const navLinks = [<Monitor/>, 'Stack', <Code2/>, <Briefcase/>, <Mail/>]
+const navLinks = ['About', 'Stack', 'Projects', 'Career', 'Contact']
 
-export default function Navbar() {
+export default function Topnav() {
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('')
 
@@ -19,31 +20,30 @@ export default function Navbar() {
   }
 
   return (
-    <div className="max-w-fit mx-auto px-6 py-3 rounded-full flex items-center justify-center gap-6 bg-white/95 border-t border-slate-200 shadow-lg backdrop-blur">
-       <nav style={{
-      position: 'fixed', bottom: 10, left: 0, right: 0, zIndex: 100,
-      borderRadius: 999,
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
       padding: '0 2rem',
-      width: 'fit-content', margin: '0 auto',
       height: '60px',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem',
-      background: scrolled ? 'rgba(15,14,12,0.85)' : 'rgba(15,14,12,0.85)',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      background: scrolled ? 'rgba(15,14,12,0.85)' : 'transparent',
       backdropFilter: scrolled ? 'blur(20px)' : 'none',
-      borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.06)',
+      borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
       transition: 'all 0.3s ease'
     }}>
       {/* Logo */}
-      {/* <div style={{
-        width: 38, height: 38, borderRadius: '10px',
+      <div style={{
+        width: 38, height: 38, borderRadius: 999, overflow: 'hidden',
         background: 'linear-gradient(135deg, #c8963c, #8a6020)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontFamily: 'var(--font-display)', fontWeight: 800,
         fontSize: '14px', color: '#fff', letterSpacing: '-0.5px',
         boxShadow: '0 4px 16px rgba(200,150,60,0.3)'
-      }}>TA</div> */}
+      }}>
+        <img src={logo} alt="Logo" style={{ width: 38, height: 38 }} />
+      </div>
 
       {/* Nav links */}
-      <div style={{ display: 'flex', gap: '0.25rem' }}>
+      {/* <div style={{ display: 'flex', gap: '0.25rem' }}>
         {navLinks.map(link => (
           <button key={link} onClick={() => scrollTo(link)}
             style={{
@@ -57,10 +57,10 @@ export default function Navbar() {
             onMouseLeave={e => e.currentTarget.style.color = active === link ? 'var(--gold)' : 'var(--text-muted)'}
           >{link}</button>
         ))}
-      </div>
+      </div> */}
 
       {/* Actions */}
-      {/* <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
         <a href="https://github.com" target="_blank" rel="noreferrer"
           style={{
             width: 34, height: 34, borderRadius: '8px',
@@ -81,9 +81,7 @@ export default function Navbar() {
           onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg4)'; e.currentTarget.style.color = 'var(--text)' }}
           onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text-muted)' }}
         ><BarChart2 size={14} /></a>
-      </div> */}
+      </div>
     </nav>
-    </div>
-   
   )
 }
