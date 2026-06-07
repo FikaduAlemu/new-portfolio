@@ -1,0 +1,33 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c8963c;
+  --gold-light: #e8b96a;
+  --gold-dim: rgba(200,150,60,0.15);
+  --bg: #0f0e0c;
+  --bg2: #161512;
+  --bg3: #1e1c18;
+  --bg4: #252320;
+  --border: rgba(255,255,255,0.07);
+  --text: #f0ece4;
+  --text-muted: #8a8278;
+  --text-dim: #5a5650;
+  --green: #4ade80;
+  --blue: #4f7df3;
+  --radius: 12px;
+ 
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+::selection { background: var(--gold-dim); color: var(--gold-light); }
