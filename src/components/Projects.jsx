@@ -3,35 +3,31 @@ import { ExternalLink, GitBranch, Star, GitFork } from 'lucide-react'
 
 const projects = [
   {
-    name: 'PCM',
-    tagline: 'developed for advanced youth ministry',
+    name: 'PCM', tagline: 'Advanced youth ministry platform',
     desc: 'A dynamic web platform for managing events, resources, and community engagement for Pentecostal Youth Ministry.',
-    tags: ['React', 'Supabase', 'Next.js', 'PostgreSQL', 'Vercel', 'Resend'],
-    stars: 48, forks: 12, color: '#4f7df3', icon: '🎯',
+    tags: ['React', 'Supabase', 'Next.js', 'PostgreSQL'],
+    stars: 48, forks: 12, color: '#3B6FD4', icon: '🎯',
     links: { demo: '#', repo: '#' }
   },
   {
-    name: 'Mindify',
-    tagline: 'patient appointment management system',
-    desc: 'A comprehensive appointment management system for healthcare providers, streamlining scheduling, patient communication, and resource allocation.',
+    name: 'Mindify', tagline: 'Patient appointment management',
+    desc: 'A comprehensive appointment management system for healthcare providers, streamlining scheduling and patient communication.',
     tags: ['React', 'Telephony', 'Tailwind'],
-    stars: 27, forks: 8, color: '#f59e0b', icon: '🧠',
+    stars: 27, forks: 8, color: '#D4914E', icon: '🧠',
     links: { demo: '#', repo: '#' }
   },
   {
-    name: 'Nomad',
-    tagline: 'platform for digital nomads',
+    name: 'Nomad', tagline: 'Platform for digital nomads',
     desc: 'Geo discovery community for digital nomads with live chat and rich profiles.',
     tags: ['React Native', 'Socket.io', 'Node.js'],
-    stars: 156, forks: 34, color: '#4ade80', icon: '🌍',
+    stars: 156, forks: 34, color: '#2D9E6B', icon: '🌍',
     links: { demo: '#', repo: '#' }
   },
   {
-    name: 'CodeRelay',
-    tagline: 'AI code helper',
+    name: 'CodeRelay', tagline: 'AI code helper',
     desc: 'Collaborative editor with AI pair programmer, supporting 20+ languages.',
     tags: ['TypeScript', 'WebRTC', 'Socket', 'Redux'],
-    stars: 196, forks: 63, color: '#a78bfa', icon: '💻',
+    stars: 196, forks: 63, color: '#7C5DC7', icon: '💻',
     links: { demo: '#', repo: '#' }
   },
 ]
@@ -41,96 +37,138 @@ export default function Projects() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.1 })
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.08 })
     if (ref.current) obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
 
   return (
-    <section id="projects" ref={ref} style={{ padding: '6rem 2rem', maxWidth: '1100px', margin: '0 auto' }}>
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', gap: '8px',
-        fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--gold)',
-        letterSpacing: '0.12em', marginBottom: '1rem',
-        opacity: visible ? 1 : 0, transition: 'opacity 0.5s'
-      }}>
-        <span style={{ width: 16, height: 1, background: 'var(--gold)', display: 'inline-block' }} />
-        WORK
-      </div>
+    <>
+      <style>{`
+        .proj-section {
+          padding: var(--section-py) var(--section-px);
+          max-width: var(--max-w); margin: 0 auto;
+          background: var(--bg);
+        }
+        .proj-header {
+          display: flex; justify-content: space-between; align-items: flex-end;
+          margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .proj-h2 {
+          font-family: var(--font-display); font-weight: 800;
+          font-size: clamp(1.9rem, 3.5vw, 2.8rem); letter-spacing: -.025em; color: var(--text);
+        }
+        .proj-all {
+          display: flex; align-items: center; gap: 5px;
+          font-size: 13px; color: var(--gold); text-decoration: none;
+          font-family: var(--font-mono); white-space: nowrap;
+          transition: opacity .2s;
+        }
+        .proj-all:hover { opacity: .7; }
+        .proj-grid {
+          display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+        }
+        .proj-card {
+          background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 16px; padding: 1.5rem;
+          display: flex; flex-direction: column; gap: 10px;
+          cursor: default; transition: all .22s;
+        }
+        .proj-card:hover { transform: translateY(-4px); }
+        .proj-card-hd {
+          display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+        }
+        .proj-icon-wrap {
+          width: 36px; height: 36px; border-radius: 10px;
+          display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+        }
+        .proj-name {
+          font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--text);
+        }
+        .proj-tagline { font-size: 11px; color: var(--text-dim); font-family: var(--font-mono); }
+        .proj-links { display: flex; gap: 8px; flex-shrink: 0; }
+        .proj-link { color: var(--text-muted); display: flex; align-items: center; text-decoration: none; transition: color .2s; }
+        .proj-link:hover { color: var(--gold); }
+        .proj-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+        .proj-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
+        .proj-tag {
+          padding: 3px 8px; border-radius: 6px; font-size: 11px;
+          background: var(--bg4); border: 1px solid var(--border);
+          color: var(--text-dim); font-family: var(--font-mono);
+        }
+        .proj-footer {
+          display: flex; gap: 12px;
+          padding-top: 8px; border-top: 1px solid var(--border);
+        }
+        .proj-stat {
+          display: flex; align-items: center; gap: 4px;
+          font-size: 12px; color: var(--text-dim); font-family: var(--font-mono);
+        }
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
-        <h2 style={{
-          fontFamily: 'var(--font-display)', fontWeight: 800,
-          fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', letterSpacing: '-0.025em',
-          opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 0.6s ease'
-        }}>Latest projects</h2>
-        <a href="#" style={{
-          display: 'flex', alignItems: 'center', gap: '6px',
-          fontSize: '13px', color: 'var(--gold)', textDecoration: 'none',
-          fontFamily: 'var(--font-mono)',
-          opacity: visible ? 1 : 0, transition: 'opacity 0.6s ease 0.2s'
-        }}>All projects <ExternalLink size={12} /></a>
-      </div>
+        /* Responsive */
+        @media (max-width: 700px) {
+          .proj-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+          .proj-card { padding: 1.2rem; }
+        }
+      `}</style>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-        {projects.map((p, i) => (
-          <div key={p.name} style={{
-            background: 'var(--bg2)', border: '1px solid var(--border)',
-            borderRadius: '16px', padding: '1.5rem',
-            transition: 'all 0.25s', cursor: 'default',
+      <section id="projects" className="proj-section" ref={ref}>
+        <div className="section-label" style={{ opacity: visible ? 1 : 0, transition: 'opacity .5s' }}>
+          <span />&nbsp;WORK
+        </div>
+
+        <div className="proj-header">
+          <h2 className="proj-h2" style={{
             opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(30px)',
-            transitionDelay: `${0.1 + i * 0.1}s`,
-            display: 'flex', flexDirection: 'column', gap: '10px'
-          }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = p.color + '44'; e.currentTarget.style.transform = 'translateY(-4px)' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)' }}
-          >
-            {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{
-                  width: 36, height: 36, borderRadius: '10px',
-                  background: p.color + '18', display: 'flex',
-                  alignItems: 'center', justifyContent: 'center', fontSize: '18px'
-                }}>{p.icon}</div>
-                <div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: 'var(--text)' }}>{p.name}</div>
-                  <div style={{ fontSize: '11px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>{p.tagline}</div>
+            transform: visible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all .6s ease'
+          }}>Latest projects</h2>
+          <a href="#" className="proj-all" style={{ opacity: visible ? 1 : 0, transition: 'opacity .6s ease .2s' }}>
+            All projects <ExternalLink size={12} />
+          </a>
+        </div>
+
+        <div className="proj-grid">
+          {projects.map((p, i) => (
+            <div key={p.name} className="proj-card"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateY(0)' : 'translateY(28px)',
+                transition: `all .6s ease ${0.1 + i * 0.1}s`
+              }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = p.color + '44'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+            >
+              <div className="proj-card-hd">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div className="proj-icon-wrap" style={{ background: p.color + '15' }}>{p.icon}</div>
+                  <div>
+                    <div className="proj-name">{p.name}</div>
+                    <div className="proj-tagline">{p.tagline}</div>
+                  </div>
+                </div>
+                <div className="proj-links">
+                  <a href={p.links.demo} className="proj-link" aria-label="Live demo"><ExternalLink size={14} /></a>
+                  <a href={p.links.repo} className="proj-link" aria-label="Repository"><GitBranch size={14} /></a>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <a href={p.links.demo} style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}><ExternalLink size={14} /></a>
-                <a href={p.links.repo} style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}><GitBranch size={14} /></a>
+
+              <p className="proj-desc">{p.desc}</p>
+
+              <div className="proj-tags">
+                {p.tags.map(t => <span key={t} className="proj-tag">{t}</span>)}
+              </div>
+
+              <div className="proj-footer">
+                <span className="proj-stat"><Star size={11} style={{ color: 'var(--gold)' }} />{p.stars}</span>
+                <span className="proj-stat"><GitFork size={11} />{p.forks}</span>
               </div>
             </div>
-
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6 }}>{p.desc}</p>
-
-            {/* Tags */}
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: 'auto' }}>
-              {p.tags.map(tag => (
-                <span key={tag} style={{
-                  padding: '3px 8px', borderRadius: '6px', fontSize: '11px',
-                  background: 'var(--bg4)', border: '1px solid var(--border)',
-                  color: 'var(--text-dim)', fontFamily: 'var(--font-mono)'
-                }}>{tag}</span>
-              ))}
-            </div>
-
-            {/* Stats */}
-            <div style={{ display: 'flex', gap: '12px', paddingTop: '8px', borderTop: '1px solid var(--border)' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>
-                <Star size={11} style={{ color: 'var(--gold)' }} />{p.stars}
-              </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>
-                <GitFork size={11} />{p.forks}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+          ))}
+        </div>
+      </section>
+    </>
   )
 }

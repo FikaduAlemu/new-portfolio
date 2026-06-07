@@ -1,26 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Onest:wght@400;500;600&family=Inconsolata:wght@400;500&display=swap');
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --gold: #c8963c;
-  --gold-light: #e8b96a;
-  --gold-dim: rgba(200,150,60,0.15);
-  --bg: #0f0e0c;
-  --bg2: #161512;
-  --bg3: #1e1c18;
-  --bg4: #252320;
-  --border: rgba(255,255,255,0.07);
-  --text: #f0ece4;
-  --text-muted: #8a8278;
-  --text-dim: #5a5650;
-  --green: #4ade80;
-  --blue: #4f7df3;
-  --radius: 12px;
+  --gold:        #B58C3D;
+  --gold-light:  #D4A94E;
+  --gold-dim:    rgba(181,140,61,0.12);
+  --gold-border: rgba(181,140,61,0.25);
+
+  /* White theme */
+  --bg:          #FFFFFF;
+  --bg2:         #F8F6F2;
+  --bg3:         #F0EDE6;
+  --bg4:         #E8E4DB;
+  --border:      rgba(0,0,0,0.08);
+  --border-md:   rgba(0,0,0,0.12);
+
+  --text:        #1A1714;
+  --text-muted:  #6B6560;
+  --text-dim:    #9E9892;
+
+  --green:       #2D9E6B;
+  --blue:        #3B6FD4;
+
+  --radius:      14px;
+  --radius-sm:   9px;
+
   --font-display: 'Syne', sans-serif;
-  --font-body: 'Onest', sans-serif;
-  --font-mono: 'Inconsolata', monospace;
+  --font-body:    'Onest', sans-serif;
+  --font-mono:    'Inconsolata', monospace;
+
+  /* Layout tokens */
+  --section-px:  2rem;
+  --section-py:  6rem;
+  --max-w:       1100px;
+}
+
+/* Tight on small screens */
+@media (max-width: 768px) {
+  :root {
+    --section-px: 1.25rem;
+    --section-py: 4rem;
+  }
+}
+@media (max-width: 480px) {
+  :root {
+    --section-px: 1rem;
+    --section-py: 3rem;
+  }
 }
 
 html { scroll-behavior: smooth; }
+
 body {
   font-family: var(--font-body);
   background: var(--bg);
@@ -30,7 +61,14 @@ body {
 }
 
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-track { background: var(--bg2); }
 ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+::selection { background: var(--gold-dim); color: var(--gold); }
 
-::selection { background: var(--gold-dim); color: var(--gold-light); }
+/* Utility */
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-family: var(--font-mono); color: var(--gold);
+  letter-spacing: 0.12em; margin-bottom: 1rem;
+}
+.section-label span { width: 16px; height: 1px; background: var(--gold); display: inline-block; }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Send, Mail, MapPin, Code2, GitBranch, Link2 } from 'lucide-react'
+import { Send, Mail, MapPin, GitBranch, Code2, Link2 } from 'lucide-react'
 
 export default function Contact() {
   const ref = useRef()
@@ -8,7 +8,7 @@ export default function Contact() {
   const [sent, setSent] = useState(false)
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.15 })
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.12 })
     if (ref.current) obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
@@ -20,139 +20,182 @@ export default function Contact() {
     setForm({ name: '', email: '', message: '' })
   }
 
-  const inputStyle = {
-    width: '100%', padding: '10px 14px', borderRadius: '10px',
-    background: 'var(--bg3)', border: '1px solid var(--border)',
-    color: 'var(--text)', fontFamily: 'var(--font-body)', fontSize: '14px',
-    outline: 'none', transition: 'border-color 0.2s'
+  const input = {
+    width: '100%', padding: '10px 14px', borderRadius: 10,
+    background: 'var(--bg2)', border: '1px solid var(--border)',
+    color: 'var(--text)', fontFamily: 'var(--font-body)', fontSize: 14,
+    outline: 'none', transition: 'border-color .2s',
   }
 
   return (
-    <section id="contact" ref={ref} style={{ padding: '6rem 2rem', maxWidth: '1100px', margin: '0 auto' }}>
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', gap: '8px',
-        fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--gold)',
-        letterSpacing: '0.12em', marginBottom: '1rem',
-        opacity: visible ? 1 : 0, transition: 'opacity 0.5s'
-      }}>
-        <span style={{ width: 16, height: 1, background: 'var(--gold)', display: 'inline-block' }} />
-        CONTACT
-      </div>
+    <>
+      <style>{`
+        .contact-section {
+          padding: var(--section-py) var(--section-px);
+          max-width: var(--max-w); margin: 0 auto;
+          background: var(--bg);
+        }
+        .contact-h2 {
+          font-family: var(--font-display); font-weight: 800;
+          font-size: clamp(2.2rem, 5vw, 3.8rem); letter-spacing: -.03em;
+          line-height: 1.06; margin-bottom: .5rem; color: var(--text);
+        }
+        .contact-sub { font-size: 15px; color: var(--text-muted); margin-bottom: 3rem; }
+        .contact-grid {
+          display: grid; grid-template-columns: 1fr 360px; gap: 3rem; align-items: start;
+        }
+        .contact-form { display: flex; flex-direction: column; gap: 12px; }
+        .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .contact-submit {
+          padding: 11px 24px; border-radius: 10px;
+          border: none; cursor: pointer;
+          font-family: var(--font-body); font-weight: 600; font-size: 14px;
+          display: flex; align-items: center; gap: 8px;
+          transition: all .3s; align-self: flex-start;
+        }
+        .contact-submit.idle {
+          background: linear-gradient(135deg, #B58C3D, #8a6820);
+          color: #fff; box-shadow: 0 4px 18px rgba(181,140,61,.3);
+        }
+        .contact-submit.idle:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(181,140,61,.38); }
+        .contact-submit.sent {
+          background: rgba(45,158,107,.1);
+          border: 1px solid rgba(45,158,107,.3);
+          color: var(--green); box-shadow: none;
+        }
+        .contact-panel {
+          background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 16px; padding: 1.5rem; margin-bottom: 16px;
+        }
+        .contact-info-row {
+          display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px;
+        }
+        .contact-info-row:last-child { margin-bottom: 0; }
+        .contact-ico {
+          width: 34px; height: 34px; border-radius: 9px;
+          background: var(--bg4); border: 1px solid var(--border);
+          display: flex; align-items: center; justify-content: center;
+          color: var(--gold); flex-shrink: 0;
+        }
+        .contact-lbl { font-size: 11px; color: var(--text-dim); font-family: var(--font-mono); }
+        .contact-val { font-size: 13px; color: var(--text); margin-top: 2px; }
+        .contact-soc-hd {
+          font-size: 11px; color: var(--text-dim);
+          font-family: var(--font-mono); margin-bottom: 12px; letter-spacing: .08em;
+        }
+        .contact-soc-row { display: flex; gap: 10px; }
+        .contact-soc-btn {
+          width: 40px; height: 40px; border-radius: 10px;
+          background: var(--bg4); border: 1px solid var(--border);
+          display: flex; align-items: center; justify-content: center;
+          color: var(--text-muted); text-decoration: none; transition: all .2s;
+        }
+        .contact-soc-btn:hover {
+          color: var(--gold); border-color: var(--gold-border); background: var(--gold-dim);
+        }
 
-      <h2 style={{
-        fontFamily: 'var(--font-display)', fontWeight: 800,
-        fontSize: 'clamp(2.5rem, 5vw, 4rem)', letterSpacing: '-0.03em',
-        lineHeight: 1.05, marginBottom: '0.5rem',
-        opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
-        transition: 'all 0.6s ease'
-      }}>
-        Let's build something<br />
-        <span style={{ color: 'var(--gold)' }}>extraordinary.</span>
-      </h2>
+        /* Responsive */
+        @media (max-width: 820px) {
+          .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+        @media (max-width: 540px) {
+          .contact-row { grid-template-columns: 1fr; }
+          .contact-h2 { font-size: clamp(2rem, 8vw, 2.8rem); }
+          .contact-sub { margin-bottom: 2rem; }
+        }
+      `}</style>
 
-      <p style={{
-        fontSize: '15px', color: 'var(--text-muted)', marginBottom: '3rem',
-        opacity: visible ? 1 : 0, transition: 'opacity 0.6s ease 0.1s'
-      }}>Have a project in mind? Let's talk about it.</p>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '3rem', alignItems: 'start' }}>
-        {/* Form */}
-        <div style={{
-          display: 'flex', flexDirection: 'column', gap: '12px',
-          opacity: visible ? 1 : 0, transform: visible ? 'translateX(0)' : 'translateX(-20px)',
-          transition: 'all 0.7s ease 0.2s'
-        }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-            <input placeholder="Your name" value={form.name}
-              onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-              style={inputStyle}
-              onFocus={e => e.target.style.borderColor = 'var(--gold)'}
-              onBlur={e => e.target.style.borderColor = 'var(--border)'}
-            />
-            <input placeholder="Email address" value={form.email}
-              onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-              style={inputStyle}
-              onFocus={e => e.target.style.borderColor = 'var(--gold)'}
-              onBlur={e => e.target.style.borderColor = 'var(--border)'}
-            />
-          </div>
-          <textarea placeholder="Tell me about your project..." value={form.message}
-            onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-            rows={5}
-            style={{ ...inputStyle, resize: 'none', lineHeight: 1.6 }}
-            onFocus={e => e.target.style.borderColor = 'var(--gold)'}
-            onBlur={e => e.target.style.borderColor = 'var(--border)'}
-          />
-          <button onClick={handleSubmit}
-            style={{
-              padding: '11px 24px', borderRadius: '10px',
-              background: sent ? '#4ade8022' : 'linear-gradient(135deg, #c8963c, #a07030)',
-              border: sent ? '1px solid #4ade80' : 'none',
-              color: sent ? '#4ade80' : '#fff', cursor: 'pointer',
-              fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '14px',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-              boxShadow: sent ? 'none' : '0 4px 20px rgba(200,150,60,0.3)',
-              transition: 'all 0.3s', alignSelf: 'flex-start'
-            }}
-          >
-            {sent ? '✓ Message sent!' : <><Send size={14} /> Send Message</>}
-          </button>
+      <section id="contact" className="contact-section" ref={ref}>
+        <div className="section-label" style={{ opacity: visible ? 1 : 0, transition: 'opacity .5s' }}>
+          <span />&nbsp;CONTACT
         </div>
 
-        {/* Info */}
-        <div style={{
-          display: 'flex', flexDirection: 'column', gap: '16px',
-          opacity: visible ? 1 : 0, transform: visible ? 'translateX(0)' : 'translateX(20px)',
-          transition: 'all 0.7s ease 0.3s'
+        <h2 className="contact-h2" style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all .6s ease'
         }}>
-          <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '16px', padding: '1.5rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              {[
-                { icon: <Mail size={15} />, label: 'Email', value: 'hello@tatty.dev' },
-                { icon: <MapPin size={15} />, label: 'Location', value: 'Addis Ababa, Ethiopia' },
-              ].map((item, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                  <div style={{
-                    width: 34, height: 34, borderRadius: '9px',
-                    background: 'var(--bg4)', border: '1px solid var(--border)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--gold)', flexShrink: 0
-                  }}>{item.icon}</div>
-                  <div>
-                    <div style={{ fontSize: '11px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>{item.label}</div>
-                    <div style={{ fontSize: '13px', color: 'var(--text)', fontFamily: 'var(--font-body)', marginTop: '2px' }}>{item.value}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          Let's build something<br />
+          <span style={{ color: 'var(--gold)' }}>extraordinary.</span>
+        </h2>
 
-          <div style={{
-            background: 'var(--bg2)', border: '1px solid var(--border)',
-            borderRadius: '16px', padding: '1.25rem'
+        <p className="contact-sub" style={{ opacity: visible ? 1 : 0, transition: 'opacity .6s ease .1s' }}>
+          Have a project in mind? Let's talk about it.
+        </p>
+
+        <div className="contact-grid">
+          {/* Form */}
+          <div className="contact-form" style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateX(0)' : 'translateX(-20px)',
+            transition: 'all .7s ease .2s'
           }}>
-            <div style={{ fontSize: '11px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)', marginBottom: '12px', letterSpacing: '0.08em' }}>SOCIAL</div>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              {[
-                { icon: <GitBranch size={16} />, href: 'https://github.com' },
-                { icon: <Code2 size={16} />, href: '#' },
-                { icon: <Link2 size={16} />, href: '#' },
-              ].map((s, i) => (
-                <a key={i} href={s.href} target="_blank" rel="noreferrer"
-                  style={{
-                    width: 40, height: 40, borderRadius: '10px',
-                    background: 'var(--bg4)', border: '1px solid var(--border)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--text-muted)', textDecoration: 'none', transition: 'all 0.2s'
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--gold)'; e.currentTarget.style.borderColor = 'var(--gold)55' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border)' }}
-                >{s.icon}</a>
-              ))}
+            <div className="contact-row">
+              <input placeholder="Your name" value={form.name}
+                onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                style={input}
+                onFocus={e => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={e => e.target.style.borderColor = 'var(--border)'}
+              />
+              <input placeholder="Email address" value={form.email}
+                onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+                style={input}
+                onFocus={e => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={e => e.target.style.borderColor = 'var(--border)'}
+              />
+            </div>
+            <textarea placeholder="Tell me about your project..." value={form.message}
+              onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+              rows={5}
+              style={{ ...input, resize: 'none', lineHeight: 1.6 }}
+              onFocus={e => e.target.style.borderColor = 'var(--gold)'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
+            />
+            <button onClick={handleSubmit}
+              className={`contact-submit ${sent ? 'sent' : 'idle'}`}>
+              {sent ? '✓ Message sent!' : <><Send size={14} /> Send Message</>}
+            </button>
+          </div>
+
+          {/* Info */}
+          <div style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateX(0)' : 'translateX(20px)',
+            transition: 'all .7s ease .3s'
+          }}>
+            <div className="contact-panel">
+              <div className="contact-info-row">
+                <div className="contact-ico"><Mail size={15} /></div>
+                <div>
+                  <div className="contact-lbl">Email</div>
+                  <div className="contact-val">hello@fa.dev</div>
+                </div>
+              </div>
+              <div className="contact-info-row">
+                <div className="contact-ico"><MapPin size={15} /></div>
+                <div>
+                  <div className="contact-lbl">Location</div>
+                  <div className="contact-val">Addis Ababa, Ethiopia</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="contact-panel">
+              <div className="contact-soc-hd">SOCIAL</div>
+              <div className="contact-soc-row">
+                {[
+                  { icon: <GitBranch size={16} />, href: 'https://github.com' },
+                  { icon: <Code2 size={16} />,     href: '#' },
+                  { icon: <Link2 size={16} />,     href: '#' },
+                ].map((s, i) => (
+                  <a key={i} href={s.href} target="_blank" rel="noreferrer"
+                    className="contact-soc-btn">{s.icon}</a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }

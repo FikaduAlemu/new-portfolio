@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { GitBranch, ExternalLink, ChevronDown, Zap } from 'lucide-react'
+import { GitBranch, ChevronDown } from 'lucide-react'
 
 const stats = [
-  { value: '5+', label: 'Years', icon: '⚡' },
-  { value: '40+', label: 'Projects', icon: '📦' },
-  { value: '20+', label: 'Clients', icon: '🤝' },
-  { value: '99%', label: 'Uptime', icon: '✅' },
+  { value: '5+',  label: 'Years'    },
+  { value: '40+', label: 'Projects' },
+  { value: '20+', label: 'Clients'  },
+  { value: '99%', label: 'Uptime'   },
 ]
 
 const techBadges = ['React', 'Node.js', 'PostgreSQL', 'Redis', 'Docker', 'AWS']
@@ -16,164 +16,211 @@ export default function Hero() {
 
   useEffect(() => {
     setTimeout(() => setVisible(true), 100)
-    setTimeout(() => setBarWidth(69), 600)
+    setTimeout(() => setBarWidth(69), 700)
   }, [])
 
   return (
-    <section id="hero" style={{
-      minHeight: '100vh', display: 'flex', flexDirection: 'column',
-      justifyContent: 'center', padding: '80px 2rem 2rem',
-      maxWidth: '1100px', margin: '0 auto'
-    }}>
-      {/* Available badge */}
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', gap: '6px',
-        padding: '5px 12px', borderRadius: '20px',
-        background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.2)',
-        fontSize: '12px', fontFamily: 'var(--font-mono)',
-        color: 'var(--green)', marginBottom: '2.5rem', width: 'fit-content',
-        opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(-10px)',
-        transition: 'all 0.5s ease'
-      }}>
-        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--green)', display: 'inline-block', animation: 'pulse 2s infinite' }} />
-        Available for new projects
-      </div>
+    <>
+      <style>{`
+        .hero-section {
+          min-height: 100vh;
+          display: flex; flex-direction: column; justify-content: center;
+          padding: 100px var(--section-px) 3rem;
+          max-width: var(--max-w); margin: 0 auto;
+        }
+        .hero-badge {
+          display: inline-flex; align-items: center; gap: 7px;
+          padding: 5px 13px; border-radius: 20px;
+          background: rgba(45,158,107,0.08);
+          border: 1px solid rgba(45,158,107,0.22);
+          font-size: 12px; font-family: var(--font-mono);
+          color: var(--green); margin-bottom: 2.5rem; width: fit-content;
+        }
+        .hero-badge-dot {
+          width: 7px; height: 7px; border-radius: 50%;
+          background: var(--green); animation: pulse 2s infinite;
+        }
+        .hero-grid {
+          display: grid;
+          grid-template-columns: 1fr 300px;
+          gap: 3rem; align-items: start;
+        }
+        .hero-h1 {
+          font-family: var(--font-display); font-weight: 800;
+          font-size: clamp(2.6rem, 5vw, 4.8rem);
+          line-height: 1.06; letter-spacing: -.03em;
+          color: var(--text); margin-bottom: 1.25rem;
+        }
+        .hero-gold { color: var(--gold); }
+        .hero-p {
+          font-size: 15px; color: var(--text-muted);
+          max-width: 460px; line-height: 1.75; margin-bottom: 2rem;
+        }
+        .hero-ctas { display: flex; gap: .75rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .btn-primary {
+          padding: 10px 22px; border-radius: 10px;
+          background: linear-gradient(135deg, #B58C3D, #8a6820);
+          border: none; color: #fff; cursor: pointer;
+          font-family: var(--font-body); font-weight: 600; font-size: 14px;
+          box-shadow: 0 4px 18px rgba(181,140,61,.28);
+          transition: transform .2s, box-shadow .2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(181,140,61,.38); }
+        .btn-outline {
+          padding: 10px 22px; border-radius: 10px;
+          background: var(--bg2); border: 1px solid var(--border);
+          color: var(--text); cursor: pointer;
+          font-family: var(--font-body); font-weight: 500; font-size: 14px;
+          display: flex; align-items: center; gap: 6px; text-decoration: none;
+          transition: border-color .2s, background .2s;
+        }
+        .btn-outline:hover { border-color: var(--border-md); background: var(--bg3); }
+        .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+        .hero-stat-val {
+          font-family: var(--font-display); font-weight: 800;
+          font-size: 1.9rem; color: var(--gold); line-height: 1;
+        }
+        .hero-stat-lbl {
+          font-size: 12px; color: var(--text-dim);
+          margin-top: 3px; font-family: var(--font-mono);
+        }
+        /* Right cards */
+        .hero-card {
+          background: var(--bg2); border: 1px solid var(--border);
+          border-radius: 16px; padding: 1.25rem; margin-bottom: 12px;
+        }
+        .hero-bar-wrap {
+          height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; margin-top: 8px;
+        }
+        .hero-bar-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #B58C3D, #D4A94E);
+          border-radius: 2px; transition: width 1.5s ease;
+        }
+        .hero-badge-chip {
+          padding: 3px 10px; border-radius: 6px; font-size: 11px;
+          background: var(--bg4); border: 1px solid var(--border);
+          color: var(--text-muted); font-family: var(--font-mono);
+        }
+        .hero-activity-dot {
+          width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+        }
+        .hero-scroll { display: flex; justify-content: center; margin-top: 3.5rem; opacity: .35; }
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '3rem', alignItems: 'start' }}>
-        {/* Left */}
-        <div>
-          {/* Headline */}
-          <h1 style={{
-            fontFamily: 'var(--font-display)', fontWeight: 800,
-            fontSize: 'clamp(2.8rem, 5vw, 5rem)', lineHeight: 1.05,
-            letterSpacing: '-0.03em', marginBottom: '1.5rem',
-            opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'all 0.6s ease 0.1s'
-          }}>
-            Crafting digital<br />
-            <span style={{ color: 'var(--gold)' }}>experiences</span><br />
-            that matter.
-          </h1>
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+          .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+          .hero-right { display: none; }
+        }
+        @media (max-width: 640px) {
+          .hero-section { padding-top: 80px; }
+          .hero-h1 { font-size: clamp(2.2rem, 8vw, 3.2rem); }
+          .hero-stats { gap: 1.5rem; }
+        }
+        @media (max-width: 380px) {
+          .hero-stats { gap: 1rem; }
+          .hero-stat-val { font-size: 1.5rem; }
+        }
 
-          {/* Subtitle */}
-          <p style={{
-            fontSize: '15px', color: 'var(--text-muted)', maxWidth: '480px',
-            lineHeight: 1.7, marginBottom: '2rem',
-            opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'all 0.6s ease 0.2s'
-          }}>
-            Full-stack engineer with 5+ years building products that scale. Obsessed with performance, accessibility, and developer experience.
-          </p>
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+      `}</style>
 
-          {/* CTA buttons */}
-          <div style={{
-            display: 'flex', gap: '0.75rem', marginBottom: '3rem',
-            opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'all 0.6s ease 0.3s'
-          }}>
-            <button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              style={{
-                padding: '10px 22px', borderRadius: '10px',
-                background: 'linear-gradient(135deg, #c8963c, #a07030)',
-                border: 'none', color: '#fff', cursor: 'pointer',
-                fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '14px',
-                boxShadow: '0 4px 20px rgba(200,150,60,0.3)',
-                transition: 'all 0.2s'
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-            >View Work ✦</button>
-            <a href="https://github.com" target="_blank" rel="noreferrer"
-              style={{
-                padding: '10px 22px', borderRadius: '10px',
-                background: 'var(--bg3)', border: '1px solid var(--border)',
-                color: 'var(--text)', cursor: 'pointer',
-                fontFamily: 'var(--font-body)', fontWeight: 500, fontSize: '14px',
-                display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none',
-                transition: 'all 0.2s'
-              }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
-            ><GitBranch size={14} /> GitHub Profile</a>
-          </div>
-
-          {/* Stats */}
-          <div style={{
-            display: 'flex', gap: '2.5rem',
-            opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'all 0.6s ease 0.4s'
-          }}>
-            {stats.map((s, i) => (
-              <div key={i}>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.8rem', color: 'var(--gold)', lineHeight: 1 }}>{s.value}</div>
-                <div style={{ fontSize: '12px', color: 'var(--text-dim)', marginTop: '2px', fontFamily: 'var(--font-mono)' }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
+      <section id="hero" className="hero-section">
+        {/* Available badge */}
+        <div className="hero-badge" style={{
+          opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(-10px)',
+          transition: 'all .5s ease'
+        }}>
+          <span className="hero-badge-dot" />
+          Available for new projects
         </div>
 
-        {/* Right – skill card */}
-        <div style={{
-          opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 0.7s ease 0.5s'
-        }}>
-          <div style={{
-            background: 'var(--bg2)', border: '1px solid var(--border)',
-            borderRadius: '16px', padding: '1.25rem', marginBottom: '1rem'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-              <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Backend</span>
-              <span style={{ fontSize: '12px', color: 'var(--gold)', fontFamily: 'var(--font-mono)' }}>69%</span>
+        <div className="hero-grid">
+          {/* LEFT */}
+          <div>
+            <h1 className="hero-h1" style={{
+              opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all .6s ease .1s'
+            }}>
+              Crafting digital<br />
+              <span className="hero-gold">experiences</span><br />
+              that matter.
+            </h1>
+
+            <p className="hero-p" style={{
+              opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all .6s ease .2s'
+            }}>
+              Full-stack engineer with 5+ years building products that scale.
+              Obsessed with performance, accessibility, and developer experience.
+            </p>
+
+            <div className="hero-ctas" style={{
+              opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all .6s ease .3s'
+            }}>
+              <button className="btn-primary"
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>
+                View Work ✦
+              </button>
+              <a href="https://github.com" target="_blank" rel="noreferrer" className="btn-outline">
+                <GitBranch size={14} /> GitHub Profile
+              </a>
             </div>
-            <div style={{ height: '4px', background: 'var(--bg4)', borderRadius: '2px', overflow: 'hidden' }}>
-              <div style={{
-                height: '100%', width: `${barWidth}%`,
-                background: 'linear-gradient(90deg, #c8963c, #e8b96a)',
-                borderRadius: '2px', transition: 'width 1.5s ease'
-              }} />
-            </div>
-            <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
-              {techBadges.map(b => (
-                <span key={b} style={{
-                  padding: '3px 10px', borderRadius: '6px', fontSize: '11px',
-                  background: 'var(--bg4)', border: '1px solid var(--border)',
-                  color: 'var(--text-muted)', fontFamily: 'var(--font-mono)'
-                }}>{b}</span>
+
+            <div className="hero-stats" style={{
+              opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all .6s ease .4s'
+            }}>
+              {stats.map(s => (
+                <div key={s.label}>
+                  <div className="hero-stat-val">{s.value}</div>
+                  <div className="hero-stat-lbl">{s.label}</div>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Mini activity card */}
-          <div style={{
-            background: 'var(--bg2)', border: '1px solid var(--border)',
-            borderRadius: '16px', padding: '1.25rem'
+          {/* RIGHT */}
+          <div className="hero-right" style={{
+            opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all .7s ease .5s'
           }}>
-            <div style={{ fontSize: '12px', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)', marginBottom: '10px' }}>Recent activity</div>
-            {['Pushed to nufellow/main', 'Opened PR #42', 'Merged feature/auth'].map((a, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: '8px', padding: '5px 0',
-                borderBottom: i < 2 ? '1px solid var(--border)' : 'none'
-              }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: i === 0 ? 'var(--green)' : 'var(--gold)', flexShrink: 0 }} />
-                <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{a}</span>
+            <div className="hero-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                <span>Backend proficiency</span>
+                <span style={{ color: 'var(--gold)' }}>69%</span>
               </div>
-            ))}
+              <div className="hero-bar-wrap">
+                <div className="hero-bar-fill" style={{ width: `${barWidth}%` }} />
+              </div>
+              <div style={{ display: 'flex', gap: 6, marginTop: 12, flexWrap: 'wrap' }}>
+                {techBadges.map(b => (
+                  <span key={b} className="hero-badge-chip">{b}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-card">
+              <div style={{ fontSize: '12px', fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', marginBottom: 10 }}>Recent activity</div>
+              {['Pushed to nufellow/main', 'Opened PR #42', 'Merged feature/auth'].map((a, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', gap: 8, padding: '5px 0',
+                  borderBottom: i < 2 ? '1px solid var(--border)' : 'none'
+                }}>
+                  <span className="hero-activity-dot" style={{ background: i === 0 ? 'var(--green)' : 'var(--gold)' }} />
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{a}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Scroll cue */}
-      <div style={{
-        display: 'flex', justifyContent: 'center', marginTop: '4rem',
-        opacity: 0.4, animation: 'bounce 2s infinite'
-      }}>
-        <ChevronDown size={20} style={{ color: 'var(--text-muted)' }} />
-      </div>
-
-      <style>{`
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
-      `}</style>
-    </section>
+        <div className="hero-scroll" style={{ animation: 'bounce 2s infinite' }}>
+          <ChevronDown size={20} color="var(--text-muted)" />
+        </div>
+      </section>
+    </>
   )
 }
