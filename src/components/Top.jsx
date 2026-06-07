@@ -36,8 +36,8 @@ export default function Topnav() {
       padding: '0 2rem',
       height: '60px',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      background: scrolled ? 'rgba(15,14,12,0.85)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(20px)' : 'none',
+      background: scrolled ? 'rgba(15,14,12,0.85)' : 'rgba(15,14,12,0.85)',
+      backdropFilter: scrolled ? 'blur(20px)' : 'blur(20px)',
       borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
       transition: 'all 0.3s ease'
     }}>
