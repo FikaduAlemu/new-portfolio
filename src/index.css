@@ -15,11 +15,14 @@
   --green: #4ade80;
   --blue: #4f7df3;
   --radius: 12px;
- 
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Onest', sans-serif;
+  --font-mono: 'Inconsolata', monospace;
 }
 
 html { scroll-behavior: smooth; }
 body {
+  font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
